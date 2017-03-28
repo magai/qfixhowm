@@ -2325,6 +2325,11 @@ function! QFixHowmTimeActionLock()
     return "\<ESC>"
   elseif pattern == '.'
     let cpattern = strftime(s:hts_time)
+  elseif pattern =~ '^\.[-+]\d\+$'
+    let days        = matchstr(pattern, '-\?\d\+')
+    let seconds     = days * 24 * 60 * 60
+    let seconds_abs = localtime() + seconds
+    let cpattern    = strftime(s:hts_date, seconds_abs)
   elseif pattern =~ '^\d\{2}:\d\{2}'
     let sec = QFixHowmDate2Int(strftime(s:hts_date).' '.pattern)
     let cpattern = strftime(s:hts_time, sec)
